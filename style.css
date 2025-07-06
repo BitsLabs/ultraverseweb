@@ -31,3 +31,25 @@ body {
   height: 100%;
   width: 100%;
 }
+
+@media (max-width: 600px) {
+  body {
+    overflow: auto;
+  }
+
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .text-block {
+    width: 100%;
+    padding: 2rem;
+    font-size: 1rem;
+  }
+
+  #ascii-art {
+    width: 100%;
+    height: 50vh;
+  }
+}
