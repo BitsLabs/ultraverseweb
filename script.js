@@ -4,7 +4,8 @@ const ctx = canvas.getContext('2d');
 function resizeCanvas() {
   if (window.innerWidth <= 600) {
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * 0.5;
+    const textHeight = document.querySelector('.text-block').offsetHeight;
+    canvas.height = window.innerHeight - textHeight;
   } else {
     canvas.width = window.innerWidth * 0.6;
     canvas.height = window.innerHeight;
