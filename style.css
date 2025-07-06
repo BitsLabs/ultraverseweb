@@ -31,3 +31,26 @@ body {
   height: 100%;
   width: 100%;
 }
+
+@media (max-width: 600px) {
+  body {
+    overflow: hidden;
+  }
+
+  .container {
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .text-block {
+    width: 100%;
+    padding: 2rem;
+    font-size: 1rem;
+    height: 50vh;
+  }
+
+  #ascii-art {
+    width: 100%;
+    height: 50vh;
+  }
+}
