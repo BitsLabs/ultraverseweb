@@ -14,28 +14,27 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 const chars = ['.', ':', '-', '=', '+', '*', '#', '%', '@'];
-function randomChar() {
-  return chars[Math.floor(Math.random() * chars.length)];
-}
+let time = 0;
 
-function drawASCII() {
+function drawWave() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#fff';
   ctx.font = '12px Courier New';
 
   const rows = Math.floor(canvas.height / 12);
   const cols = Math.floor(canvas.width / 8);
-  const pattern = [];
 
   for (let y = 0; y < rows; y++) {
-    let line = '';
     for (let x = 0; x < cols; x++) {
-      const char = randomChar();
-      line += char;
-      ctx.fillText(char, x * 8, y * 12);
+      const index = Math.floor((Math.sin(time + (x + y) / 4) + 1) / 2 * (chars.length - 1));
+      const char = chars[index];
+      const yPos = y * 12 + Math.sin(time + x / 3) * 6;
+      ctx.fillText(char, x * 8, yPos);
     }
-    pattern.push(line);
   }
+
+  time += 0.1;
+  requestAnimationFrame(drawWave);
 }
 
-setInterval(drawASCII, 100);
+requestAnimationFrame(drawWave);
