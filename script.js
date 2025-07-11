@@ -14,29 +14,40 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-const chars = ['.', ':', '-', '=', '+', '*', '#', '%', '@'];
-let time = 0;
+const frames = [
+  ['.'],
+  ['.', '|'],
+  ['.', '|', '|'],
+  ['.', '|', '|', '|'],
+  ['.', '|', '\\|/', '|'],
+  ['\\|/', '--O--', '/|\\', ' |', '/ \\']
+];
 
-function drawWave() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#fff';
-  ctx.font = '12px Courier New';
+let frameIndex = 0;
+let lastUpdate = 0;
+const lineHeight = 12;
 
-  const rows = Math.floor(canvas.height / 12);
-  const cols = Math.floor(canvas.width / 8);
-
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      const index = Math.floor((Math.sin(time + (x + y) / 4) + 1) / 2 * (chars.length - 1));
-      const char = chars[index];
-      const yPos = y * 12 + Math.sin(time + x / 3) * 6;
-      ctx.fillText(char, x * 8, yPos);
-    }
+function draw(timestamp) {
+  if (timestamp - lastUpdate > 500) {
+    lastUpdate = timestamp;
+    frameIndex = (frameIndex + 1) % frames.length;
   }
 
-  // Slow down the animation a bit for a smoother effect
-  time += 0.05;
-  requestAnimationFrame(drawWave);
-}
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#fff';
+  ctx.font = `${lineHeight}px Courier New`;
 
-requestAnimationFrame(drawWave);
+  const lines = frames[frameIndex];
+  const totalHeight = lines.length * lineHeight;
+  const startY = (canvas.height - totalHeight) / 2;
+
+  lines.forEach((line, i) => {
+    const textWidth = ctx.measureText(line).width;
+    const x = (canvas.width - textWidth) / 2;
+    const y = startY + i * lineHeight;
+    ctx.fillText(line, x, y);
+  });
+
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
